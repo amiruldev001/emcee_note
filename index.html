@@ -1,0 +1,138 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#000000" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" sizes="192x192" href="icons/icon-192.png" />
+  <title>EMCEE Flash Slides (Full Script)</title>
+  <style>
+    :root{ --fg:#fff; --bg:#000; --muted:#9aa0a6; --accent:#03dac6; --font: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; }
+    @media (prefers-color-scheme: light){ :root{ --fg:#111; --bg:#fff; --muted:#666; --accent:#0066ff; }}
+    *{ box-sizing:border-box }
+    html,body{ height:100%; margin:0; background:var(--bg); color:var(--fg); font-family:var(--font); }
+    #app{ height:100%; display:flex; align-items:center; justify-content:center; position:relative; padding:24px; }
+    .slide{ width:100%; height:100%; display:flex; align-items:center; justify-content:center; text-align:center; }
+    .content{ max-width: 960px; padding: 20px; }
+    .point{ font-weight: 750; line-height:1.28; letter-spacing:.2px; white-space:pre-wrap; }
+    @media (orientation: portrait){ .point{ font-size: clamp(22px, 4.8vw, 40px); } }
+    @media (orientation: landscape){ .point{ font-size: clamp(18px, 3.6vw, 34px); } }
+    .topbar{ position:absolute; top:0; left:0; right:0; height:44px; display:flex; align-items:center; gap:8px; padding:8px 12px; color:var(--muted); font-size:14px; background: linear-gradient( to bottom, rgba(0,0,0,.55), rgba(0,0,0,0)); }
+    .right-hint, .left-hint{ position:absolute; top:50%; transform:translateY(-50%); color:var(--muted); font-size:12px; opacity:.4; }
+    .right-hint{ right:10px; } .left-hint{ left:10px; }
+    .progress{ position:absolute; left:0; right:0; bottom:0; height:6px; background: rgba(255,255,255,.1); }
+    .progress > div{ height:100%; background: var(--accent); width:0%; transition: width .25s ease; }
+    .pill{ border:1px solid rgba(255,255,255,.2); border-radius:999px; padding:6px 10px; color:var(--fg); background: rgba(255,255,255,.05); cursor:pointer; user-select:none; }
+    .pill:hover{ background: rgba(255,255,255,.12); }
+    #rotate{ position:absolute; top:56px; left:50%; transform:translateX(-50%); color:var(--muted); font-size:12px; display:none; }
+  </style>
+</head>
+<body>
+  <div id="app" tabindex="0">
+    <div class="topbar">
+      <div id="title">EMCEE FLASH (Full Script) – <span id="pos"></span></div>
+      <div style="margin-left:auto; display:flex; gap:8px; align-items:center;">
+        <span id="orientation"></span>
+        <button id="installBtn" class="pill" style="display:none">Install</button>
+        <button id="themeBtn" class="pill">Dark</button>
+      </div>
+    </div>
+    <div id="rotate">Tip: Rotate your phone for a better view</div>
+    <div class="left-hint">◀︎</div>
+    <div class="right-hint">▶︎</div>
+    <div class="slide"><div class="content"><div class="point" id="point"></div></div></div>
+    <div class="progress"><div id="bar"></div></div>
+  </div>
+  <script>
+    const slides = ["EMCEE SCRIPT – CSQ Thanksgiving Gathering\nDate: Tuesday, 03 February 2026\nTime: 4:30 pm – 5:30 pm\nVenue: Lobby, CSQ Main Office\nEmcee: Mr. Amirul Hj Nordin", "Pre‑Start (4:15 pm)\nAssalamualaikum and good evening. We will begin at 4:30 pm. Please gather at the main lobby area. Thank you.", "Opening & Welcome (4:30 pm)\nAssalamualaikum warahmatullahi wabarakatuh and a very good evening.\nA warm welcome to Mr. Abdul Hushairin (AGM), Mr. Shamsul Rizal (SGM), all managers, and all CSQ colleagues.\nWelcome to our CSQ Thanksgiving Gathering—a meaningful moment to come together in gratitude. Thank you for making time to join us in the main office lobby.", "Housekeeping\nFood stations are on the right/left side of the lobby—please queue politely.\nSurau and restrooms are on Level [state if needed].\nPlease help us maintain cleanliness. Thank you.\n(Humor) If the aroma of the grilled lamb and bakso is already calling your name, bear with us—just a little bit longer!", "Set the Tone (4:31 pm)\nThough this is a simple event, it carries great meaning. We gather to seek blessings, strengthen our bond, and celebrate achievements together. Let us begin with the opening remarks.", "Brief Remarks by Emcee (4:31 pm)\nOn behalf of the organizing team, I, Amirul Hj Nordin, thank everyone who made this event possible—the committee, logistics, and F&B teams. May this gathering bring goodness to all of us.", "Invite AGM (4:32 pm)\nLadies and gentlemen, we now invite Mr. Abdul Hushairin, our AGM, to deliver his remarks. Please welcome him. [Lead applause]", "After AGM Speech\nThank you, Mr. Abdul Hushairin, for the inspiring message. Another round of applause, please!", "Invite SGM (4:33 pm)\nNext, we invite Mr. Shamsul Rizal, our SGM, to deliver his speech. Please welcome him. [Lead applause]", "After SGM Speech\nThank you, Mr. Shamsul Rizal, for the meaningful and motivating address. A warm round of applause once again.", "Prayer (Doa) – Introduction (4:33–4:34 pm)\nBefore we proceed with the meal, let us take a moment for a short prayer. For our non‑Muslim colleagues, please observe a moment of silence according to your faith.", "Prayer (Doa) – Text\nIn the name of Allah, the Most Gracious, the Most Merciful.\nO Allah, we thank You for all the blessings and success You have granted us. Strengthen the bond among us and bless the efforts and work we carry out. Protect us from hardship and grant us health, safety, and lawful sustenance.\nO Allah, make this gathering of ours a blessed one, and make our parting thereafter a parting protected by You.\nOur Lord, grant us goodness in this world and goodness in the Hereafter, and protect us from the torment of the Fire.\nAnd peace and blessings be upon Prophet Muhammad, his family, and his companions.\nAll praise is due to Allah, Lord of all worlds.\nAmin.", "Meal & Fellowship (4:34 pm)\nWith that, please enjoy the food prepared—grilled lamb, fried chicken, butter rice with dipping sauce, traditional kuih, bakso & noodle soup, and hot/cold beverages.\nPlease queue politely. You may prioritize senior colleagues and ladies first. Enjoy your meal!", "Gentle Reminder (5:20 pm)\nLadies and gentlemen, our event will end around 5:30 pm. If you need to return to meetings or operations, please manage your time accordingly. Thank you for joining us.", "Closing & Thank You (5:28–5:30 pm)\nAlhamdulillah, we have come to the end of our event.\nThank you to our AGM, SGM, all managers, and all CSQ staff who made today meaningful—and to the technical and F&B teams for excellent support.\nMay today strengthen our unity and bring continued success to CSQ.\nAssalamualaikum, thank you, and have a safe journey home."];
+    let i = 0;
+
+    function render(){
+      const point = document.getElementById('point');
+      point.textContent = slides[i]; // white-space:pre-wrap in CSS preserves line breaks
+      document.getElementById('pos').textContent = `${i+1}/${slides.length}`;
+      document.getElementById('bar').style.width = `${((i+1)/slides.length)*100}%`;
+      document.getElementById('orientation').textContent = (screen.orientation && screen.orientation.type) ? screen.orientation.type : '';
+      const rotate = document.getElementById('rotate');
+      const isPortrait = window.matchMedia('(orientation: portrait)').matches;
+      rotate.style.display = isPortrait ? 'block' : 'none';
+    }
+
+    function next(){ if(i < slides.length-1){ i++; render(); } }
+    function prev(){ if(i > 0){ i--; render(); } }
+
+    const app = document.getElementById('app');
+    app.addEventListener('click', (e)=>{
+      const x = e.clientX / window.innerWidth;
+      if(x < 0.4) prev(); else next();
+    });
+
+    window.addEventListener('keydown', (e)=>{
+      if(['ArrowRight','PageDown',' '].includes(e.key)) next();
+      if(['ArrowLeft','PageUp','Backspace'].includes(e.key)) prev();
+    });
+
+    let sx=0, sy=0;
+    app.addEventListener('touchstart', e=>{ sx=e.changedTouches[0].clientX; sy=e.changedTouches[0].clientY; }, {passive:true});
+    app.addEventListener('touchend', e=>{
+      const dx = e.changedTouches[0].clientX - sx;
+      const dy = e.changedTouches[0].clientY - sy;
+      if(Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 30){ dx<0 ? next() : prev(); }
+    });
+
+    window.addEventListener('orientationchange', render);
+    const mql = window.matchMedia('(orientation: portrait)');
+    if (mql && mql.addEventListener) { mql.addEventListener('change', render); }
+
+    const themeBtn = document.getElementById('themeBtn');
+    function setTheme(mode){
+      if(mode==='light'){
+        document.documentElement.style.setProperty('--fg','#111');
+        document.documentElement.style.setProperty('--bg','#fff');
+        document.documentElement.style.setProperty('--muted','#666');
+        document.documentElement.style.setProperty('--accent','#0066ff');
+        themeBtn.textContent='Light';
+      } else {
+        document.documentElement.style.setProperty('--fg','#fff');
+        document.documentElement.style.setProperty('--bg','#000');
+        document.documentElement.style.setProperty('--muted','#9aa0a6');
+        document.documentElement.style.setProperty('--accent','#03dac6');
+        themeBtn.textContent='Dark';
+      }
+      localStorage.setItem('theme', mode);
+    }
+    themeBtn.addEventListener('click', ()=>{
+      const current = localStorage.getItem('theme')||'dark';
+      setTheme(current==='dark'?'light':'dark');
+    });
+
+    setTheme(localStorage.getItem('theme')||'dark');
+
+    let deferredPrompt;
+    const installBtn = document.getElementById('installBtn');
+    window.addEventListener('beforeinstallprompt', (e)=>{
+      e.preventDefault();
+      deferredPrompt = e;
+      installBtn.style.display='inline-block';
+    });
+    installBtn.addEventListener('click', async()=>{
+      if(!deferredPrompt) return;
+      deferredPrompt.prompt();
+      await deferredPrompt.userChoice; 
+      deferredPrompt = null;
+      installBtn.style.display='none';
+    });
+
+    if('serviceWorker' in navigator){
+      window.addEventListener('load', ()=>{
+        navigator.serviceWorker.register('sw.js');
+      });
+    }
+
+    render();
+    app.focus();
+  </script>
+</body>
+</html>
