@@ -49,6 +49,19 @@ button:hover {
     border-radius: 10px;
 }
 
+.radio-group {
+    display: flex;
+    justify-content: space-between;
+    background: #334155;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 8px;
+}
+
+.radio-group label {
+    font-size: 13px;
+}
+
 .table-container {
     max-height: 300px;
     overflow-y: auto;
@@ -67,16 +80,4 @@ th, td {
 
 th {
     background: #22c55e;
-}
-.radio-group {
-    display: flex;
-    justify-content: space-between;
-    background: #334155;
-    padding: 10px;
-    border-radius: 10px;
-    margin-top: 8px;
-}
-
-.radio-group label {
-    font-size: 13px;
 }
