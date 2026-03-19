@@ -2,63 +2,22 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Car Loan Calculator</title>
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        background: #f5f6fa;
-        padding: 20px;
-    }
-    .container {
-        max-width: 500px;
-        margin: auto;
-        background: white;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-    h2 {
-        text-align: center;
-    }
-    input, select, button {
-        width: 100%;
-        padding: 10px;
-        margin: 8px 0;
-        border-radius: 5px;
-        border: 1px solid #ccc;
-    }
-    button {
-        background: #2e86de;
-        color: white;
-        font-weight: bold;
-        cursor: pointer;
-    }
-    button:hover {
-        background: #1b4f72;
-    }
-    .result {
-        margin-top: 15px;
-        background: #ecf0f1;
-        padding: 10px;
-        border-radius: 5px;
-    }
-</style>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Loan Calculator PWA</title>
+
+<link rel="stylesheet" href="style.css">
+<link rel="manifest" href="manifest.json">
+
 </head>
 <body>
 
 <div class="container">
-    <h2>Car Loan Calculator</h2>
+    <h2>🚗 Loan Calculator</h2>
 
-    <label>Harga Kereta (RM)</label>
-    <input type="number" id="price" placeholder="Contoh: 50000">
+    <input type="number" id="price" placeholder="Harga Kereta (RM)">
+    <input type="number" id="dp" placeholder="Down Payment (%)">
+    <input type="number" id="rate" placeholder="Interest (%)">
 
-    <label>Down Payment (%)</label>
-    <input type="number" id="dp" placeholder="Contoh: 10">
-
-    <label>Interest Rate (%)</label>
-    <input type="number" id="rate" placeholder="Contoh: 3">
-
-    <label>Tempoh Pinjaman</label>
     <select id="years">
         <option value="3">3 Tahun</option>
         <option value="5">5 Tahun</option>
@@ -68,41 +27,25 @@
 
     <button onclick="calculate()">KIRA</button>
 
-    <div class="result" id="output"></div>
+    <div id="result"></div>
+
+    <h3>📊 Jadual Bayaran</h3>
+    <div class="table-container">
+        <table id="schedule">
+            <thead>
+                <tr>
+                    <th>Bulan</th>
+                    <th>Bayaran</th>
+                    <th>Interest</th>
+                    <th>Principal</th>
+                    <th>Baki</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
 </div>
 
-<script>
-function calculate() {
-    let price = parseFloat(document.getElementById("price").value);
-    let dpPercent = parseFloat(document.getElementById("dp").value);
-    let rate = parseFloat(document.getElementById("rate").value) / 100;
-    let years = parseInt(document.getElementById("years").value);
-
-    if (!price || !dpPercent || !rate) {
-        alert("Sila isi semua maklumat!");
-        return;
-    }
-
-    let dpAmount = price * (dpPercent / 100);
-    let loan = price - dpAmount;
-    let months = years * 12;
-
-    // Reducing balance formula (monthly)
-    let monthlyRate = rate / 12;
-    let monthly = loan * (monthlyRate * Math.pow(1 + monthlyRate, months)) / 
-                  (Math.pow(1 + monthlyRate, months) - 1);
-
-    let totalPayment = monthly * months;
-    let totalInterest = totalPayment - loan;
-
-    document.getElementById("output").innerHTML = `
-        <strong>Loan Amount:</strong> RM ${loan.toFixed(2)}<br>
-        <strong>Monthly Payment:</strong> RM ${monthly.toFixed(2)}<br>
-        <strong>Total Payment:</strong> RM ${totalPayment.toFixed(2)}<br>
-        <strong>Total Interest:</strong> RM ${totalInterest.toFixed(2)}
-    `;
-}
-</script>
-
+<script src="app.js"></script>
 </body>
 </html>
