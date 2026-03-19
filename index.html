@@ -17,17 +17,6 @@
     <input type="number" id="price" placeholder="Harga Kereta (RM)">
     <input type="number" id="dp" placeholder="Down Payment (%)">
     <input type="number" id="rate" placeholder="Interest (%)">
-<label>Jenis Interest</label>
-<div class="radio-group">
-    <label>
-        <input type="radio" name="interestType" value="reducing" checked>
-        Reducing Balance
-    </label>
-    <label>
-        <input type="radio" name="interestType" value="flat">
-        Fixed / Flat Rate
-    </label>
-</div>
 
     <select id="years">
         <option value="3">3 Tahun</option>
@@ -35,6 +24,19 @@
         <option value="7">7 Tahun</option>
         <option value="9">9 Tahun</option>
     </select>
+
+    <!-- RADIO BUTTON -->
+    <label>Jenis Interest</label>
+    <div class="radio-group">
+        <label>
+            <input type="radio" name="interestType" value="reducing" checked>
+            Reducing Balance
+        </label>
+        <label>
+            <input type="radio" name="interestType" value="flat">
+            Fixed / Flat Rate
+        </label>
+    </div>
 
     <button onclick="calculate()">KIRA</button>
 
@@ -58,5 +60,12 @@
 </div>
 
 <script src="app.js"></script>
+
+<script>
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('service-worker.js');
+}
+</script>
+
 </body>
 </html>
