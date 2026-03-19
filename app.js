@@ -38,9 +38,53 @@ function calculate() {
     }
 
     document.getElementById("result").innerHTML = `
-        Loan: RM ${loan.toFixed(2)}<br>
-        Monthly: RM ${monthly.toFixed(2)}<br>
-        Total: RM ${total.toFixed(2)}<br>
-        Interest: RM ${interest.toFixed(2)}
+        <strong>Loan:</strong> RM ${loan.toFixed(2)}<br>
+        <strong>Monthly:</strong> RM ${monthly.toFixed(2)}<br>
+        <strong>Total:</strong> RM ${total.toFixed(2)}<br>
+        <strong>Interest:</strong> RM ${interest.toFixed(2)}
     `;
+}
+
+// REDUCING BALANCE
+function generateScheduleReducing(balance, monthly, rate, months) {
+    let tbody = document.querySelector("#schedule tbody");
+    tbody.innerHTML = "";
+
+    for (let i = 1; i <= months; i++) {
+        let interest = balance * rate;
+        let principal = monthly - interest;
+        balance -= principal;
+
+        tbody.innerHTML += `
+        <tr>
+            <td>${i}</td>
+            <td>${monthly.toFixed(2)}</td>
+            <td>${interest.toFixed(2)}</td>
+            <td>${principal.toFixed(2)}</td>
+            <td>${balance > 0 ? balance.toFixed(2) : 0}</td>
+        </tr>`;
+    }
+}
+
+// FLAT RATE
+function generateScheduleFlat(loan, monthly, totalInterest, months) {
+    let tbody = document.querySelector("#schedule tbody");
+    tbody.innerHTML = "";
+
+    let monthlyPrincipal = loan / months;
+    let monthlyInterest = totalInterest / months;
+    let balance = loan;
+
+    for (let i = 1; i <= months; i++) {
+        balance -= monthlyPrincipal;
+
+        tbody.innerHTML += `
+        <tr>
+            <td>${i}</td>
+            <td>${monthly.toFixed(2)}</td>
+            <td>${monthlyInterest.toFixed(2)}</td>
+            <td>${monthlyPrincipal.toFixed(2)}</td>
+            <td>${balance > 0 ? balance.toFixed(2) : 0}</td>
+        </tr>`;
+    }
 }
