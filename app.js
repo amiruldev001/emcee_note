@@ -1,17 +1,32 @@
 function calculate() {
     let price = parseFloat(document.getElementById("price").value);
-    let dpPercent = parseFloat(document.getElementById("dp").value);
+    let dpInput = parseFloat(document.getElementById("dp").value);
     let rate = parseFloat(document.getElementById("rate").value) / 100;
     let years = parseInt(document.getElementById("years").value);
-
     let type = document.querySelector('input[name="interestType"]:checked').value;
 
-    if (!price || !dpPercent || !rate) {
+    if (!price || !dpInput || !rate) {
         alert("Isi semua maklumat");
         return;
     }
 
-    let dp = price * (dpPercent / 100);
+    // AUTO DETECT DP
+    let dp;
+    let dpType;
+
+    if (dpInput <= 100) {
+        dp = price * (dpInput / 100);
+        dpType = dpInput + "%";
+    } else {
+        dp = dpInput;
+        dpType = "RM " + dpInput;
+    }
+
+    if (dp > price) {
+        alert("Down payment tak boleh lebih dari harga kereta");
+        return;
+    }
+
     let loan = price - dp;
     let months = years * 12;
 
@@ -29,7 +44,6 @@ function calculate() {
         generateScheduleReducing(loan, monthly, monthlyRate, months);
 
     } else {
-        // FLAT RATE
         interest = loan * rate * years;
         total = loan + interest;
         monthly = total / months;
@@ -38,14 +52,15 @@ function calculate() {
     }
 
     document.getElementById("result").innerHTML = `
-        <strong>Loan:</strong> RM ${loan.toFixed(2)}<br>
-        <strong>Monthly:</strong> RM ${monthly.toFixed(2)}<br>
-        <strong>Total:</strong> RM ${total.toFixed(2)}<br>
-        <strong>Interest:</strong> RM ${interest.toFixed(2)}
+        <div><span>Loan</span><span>RM ${loan.toFixed(2)}</span></div>
+        <div><span>Down Payment</span><span>${dpType}</span></div>
+        <div class="highlight"><span>Monthly</span><span>RM ${monthly.toFixed(2)}</span></div>
+        <div><span>Total</span><span>RM ${total.toFixed(2)}</span></div>
+        <div><span>Interest</span><span>RM ${interest.toFixed(2)}</span></div>
     `;
 }
 
-// REDUCING BALANCE
+// REDUCING
 function generateScheduleReducing(balance, monthly, rate, months) {
     let tbody = document.querySelector("#schedule tbody");
     tbody.innerHTML = "";
@@ -66,7 +81,7 @@ function generateScheduleReducing(balance, monthly, rate, months) {
     }
 }
 
-// FLAT RATE
+// FLAT
 function generateScheduleFlat(loan, monthly, totalInterest, months) {
     let tbody = document.querySelector("#schedule tbody");
     tbody.innerHTML = "";
