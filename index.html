@@ -3,19 +3,129 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Loan Calculator PWA</title>
 
-<link rel="stylesheet" href="style.css">
+<title>Loan Calculator</title>
+
 <link rel="manifest" href="manifest.json">
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+    color: white;
+}
+
+.header {
+    padding: 20px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.card {
+    background: #1e293b;
+    margin: 15px;
+    padding: 15px;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+}
+
+input, select {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    border-radius: 10px;
+    border: none;
+    background: #334155;
+    color: white;
+}
+
+.radio-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.radio-group label {
+    flex: 1;
+    background: #334155;
+    padding: 10px;
+    border-radius: 10px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.radio-group input {
+    display: none;
+}
+
+.radio-group input:checked + span {
+    background: #22c55e;
+    display: block;
+    border-radius: 10px;
+}
+
+button {
+    width: 100%;
+    padding: 14px;
+    margin-top: 15px;
+    border-radius: 12px;
+    border: none;
+    background: linear-gradient(90deg, #22c55e, #16a34a);
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.result {
+    margin-top: 15px;
+    background: #0f172a;
+    padding: 15px;
+    border-radius: 12px;
+}
+
+.result div {
+    display: flex;
+    justify-content: space-between;
+    margin: 6px 0;
+}
+
+.highlight {
+    font-size: 20px;
+    font-weight: bold;
+    color: #22c55e;
+}
+
+.table-container {
+    max-height: 250px;
+    overflow-y: auto;
+    margin-top: 10px;
+}
+
+table {
+    width: 100%;
+    font-size: 12px;
+}
+
+th {
+    background: #22c55e;
+    padding: 6px;
+}
+
+td {
+    padding: 5px;
+    text-align: center;
+}
+</style>
 
 </head>
 <body>
 
-<div class="container">
-    <h2>🚗 Loan Calculator</h2>
+<div class="header">🚗 Loan Calculator</div>
 
+<div class="card">
     <input type="number" id="price" placeholder="Harga Kereta (RM)">
-    <input type="number" id="dp" placeholder="Down Payment (%)">
+    <input type="number" id="dp" placeholder="Down Payment (% atau RM)">
     <input type="number" id="rate" placeholder="Interest (%)">
 
     <select id="years">
@@ -25,30 +135,30 @@
         <option value="9">9 Tahun</option>
     </select>
 
-    <!-- RADIO BUTTON -->
-    <label>Jenis Interest</label>
     <div class="radio-group">
         <label>
             <input type="radio" name="interestType" value="reducing" checked>
-            Reducing Balance
+            <span>Reducing</span>
         </label>
         <label>
             <input type="radio" name="interestType" value="flat">
-            Fixed / Flat Rate
+            <span>Flat</span>
         </label>
     </div>
 
     <button onclick="calculate()">KIRA</button>
 
-    <div id="result"></div>
+    <div class="result" id="result"></div>
+</div>
 
+<div class="card">
     <h3>📊 Jadual Bayaran</h3>
     <div class="table-container">
         <table id="schedule">
             <thead>
                 <tr>
                     <th>Bulan</th>
-                    <th>Bayaran</th>
+                    <th>Bayar</th>
                     <th>Interest</th>
                     <th>Principal</th>
                     <th>Baki</th>
