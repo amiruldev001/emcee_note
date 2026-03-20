@@ -6,13 +6,11 @@ function calculate() {
     let type = document.querySelector('input[name="interestType"]:checked').value;
 
     if (!price || !dpInput || !rate) {
-        alert("Isi semua maklumat");
+        alert("Sila isi semua maklumat");
         return;
     }
 
-    // AUTO DETECT DP
-    let dp;
-    let dpType;
+    let dp, dpType;
 
     if (dpInput <= 100) {
         dp = price * (dpInput / 100);
@@ -33,22 +31,21 @@ function calculate() {
     let monthly, total, interest;
 
     if (type === "reducing") {
-        let monthlyRate = rate / 12;
+        let r = rate / 12;
 
-        monthly = loan * (monthlyRate * Math.pow(1 + monthlyRate, months)) /
-            (Math.pow(1 + monthlyRate, months) - 1);
+        monthly = loan * (r * Math.pow(1 + r, months)) /
+            (Math.pow(1 + r, months) - 1);
 
         total = monthly * months;
         interest = total - loan;
 
-        generateScheduleReducing(loan, monthly, monthlyRate, months);
-
+        generateReducing(loan, monthly, r, months);
     } else {
         interest = loan * rate * years;
         total = loan + interest;
         monthly = total / months;
 
-        generateScheduleFlat(loan, monthly, interest, months);
+        generateFlat(loan, monthly, interest, months);
     }
 
     document.getElementById("result").innerHTML = `
@@ -58,10 +55,12 @@ function calculate() {
         <div><span>Total</span><span>RM ${total.toFixed(2)}</span></div>
         <div><span>Interest</span><span>RM ${interest.toFixed(2)}</span></div>
     `;
+
+    document.getElementById("schedule").scrollIntoView();
 }
 
-// REDUCING
-function generateScheduleReducing(balance, monthly, rate, months) {
+/* REDUCING */
+function generateReducing(balance, monthly, rate, months) {
     let tbody = document.querySelector("#schedule tbody");
     tbody.innerHTML = "";
 
@@ -81,24 +80,24 @@ function generateScheduleReducing(balance, monthly, rate, months) {
     }
 }
 
-// FLAT
-function generateScheduleFlat(loan, monthly, totalInterest, months) {
+/* FLAT */
+function generateFlat(loan, monthly, totalInterest, months) {
     let tbody = document.querySelector("#schedule tbody");
     tbody.innerHTML = "";
 
-    let monthlyPrincipal = loan / months;
-    let monthlyInterest = totalInterest / months;
+    let principal = loan / months;
+    let interest = totalInterest / months;
     let balance = loan;
 
     for (let i = 1; i <= months; i++) {
-        balance -= monthlyPrincipal;
+        balance -= principal;
 
         tbody.innerHTML += `
         <tr>
             <td>${i}</td>
             <td>${monthly.toFixed(2)}</td>
-            <td>${monthlyInterest.toFixed(2)}</td>
-            <td>${monthlyPrincipal.toFixed(2)}</td>
+            <td>${interest.toFixed(2)}</td>
+            <td>${principal.toFixed(2)}</td>
             <td>${balance > 0 ? balance.toFixed(2) : 0}</td>
         </tr>`;
     }
