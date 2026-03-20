@@ -10,20 +10,24 @@ function calculate() {
         return;
     }
 
-    let dp, dpType;
+  let dp, dpType;
 
-    if (dpInput <= 100) {
-        dp = price * (dpInput / 100);
-        dpType = dpInput + "%";
-    } else {
-        dp = dpInput;
-        dpType = "RM " + dpInput;
-    }
+// SMART DETECTION
+if (dpInput <= 100 && dpInput <= price) {
+    // kemungkinan besar percentage
+    dp = price * (dpInput / 100);
+    dpType = dpInput + "%";
+} else {
+    // anggap RM
+    dp = dpInput;
+    dpType = "RM " + dpInput;
+}
 
-    if (dp > price) {
-        alert("Down payment tak boleh lebih dari harga kereta");
-        return;
-    }
+// VALIDATION
+if (dp > price) {
+    alert("Down payment melebihi harga kereta!");
+    return;
+}
 
     let loan = price - dp;
     let months = years * 12;
